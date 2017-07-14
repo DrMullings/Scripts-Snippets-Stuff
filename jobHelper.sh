@@ -56,8 +56,8 @@ fi
 
 # Run clone_job
 
-for ((i=0;i< $RUN;i+=1))
+for ((i=0;i<$RUN;i+=1))
 do
     #echo "$CJ $FIRSTARGS --from $SOURCE $JOBID $LASTARGS"
-    $($CJ $FIRSTARGS --from $SOURCE $JOBID $LASTARGS)
+    $CJ $FIRSTARGS --from $SOURCE $JOBID $LASTARGS
 done
