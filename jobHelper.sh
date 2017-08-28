@@ -6,6 +6,8 @@
 # get URL by regex
 # get ID by relative position to URL?
 # implement more Flags and Parameters as wrap-up, e.g. RAM for QEMURAM
+# -d DESTINATION for --host
+# apikey and apisecret without hardcoding
 
 # Variables:
 ME="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")"
@@ -15,6 +17,10 @@ FIRSTARGS=''
 LASTARGS=''
 RUN='1'
 SOURCE=''
+APIKEY=''
+APISECRET=''
+DESTINATION='localhost'
+
 
 # Functions:
 
@@ -25,12 +31,13 @@ help() {
     echo -e "\t -o [OPTIONS] \t\t options passed to openqa"
     echo -e "\t -p [PARAMETERS] \t parameters for clone_job"
     echo -e "\t -n [int] \t\t clone ID int times"
+    echo -e "\t -d DESTIANTION \t\t destination to clone to"
     #TODO
     exit
 }
 
 # Parse parameters
-while getopts 'j:n:o:s:n:p:' OPTION;
+while getopts 'j:n:o:s:n:p:d:' OPTION;
 do
     case $OPTION in
         j) JOBID=$OPTARG;;
@@ -39,6 +46,7 @@ do
         s) SOURCE=$OPTARG;;
         n) RUN=$OPTARG;;
         p) FIRSTARGS=$OPTARG;;
+        d) DESTINATION=$OPTARG;;
         *) help;;
     esac
 done
@@ -59,5 +67,5 @@ fi
 for ((i=0;i<$RUN;i+=1))
 do
     #echo "$CJ $FIRSTARGS --from $SOURCE $JOBID $LASTARGS"
-    $CJ $FIRSTARGS --from $SOURCE $JOBID $LASTARGS
+    $CJ $FIRSTARGS --host $DESTINATION --from $SOURCE $JOBID $LASTARGS
 done
