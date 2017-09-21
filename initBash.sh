@@ -12,5 +12,4 @@ echo 'alias lla="ls -la "' >> $ALIASFILE
 echo 'alias sudo="sudo "' >> $ALIASFILE
 
 echo "Setting path"
-echo "export PATH=$PATH:/home/$USER/Scripts" >> /home/$USER/.bashrc
-
+echo "export PATH=$PATH:/home/$USER/Scripts" >> /etc/bash.bashrc.local
