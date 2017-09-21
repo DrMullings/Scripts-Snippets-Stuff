@@ -6,8 +6,7 @@
 # get URL by regex
 # get ID by relative position to URL?
 # implement more Flags and Parameters as wrap-up, e.g. RAM for QEMURAM
-# -d DESTINATION for --host
-# apikey and apisecret without hardcoding
+# apikey and apisecret without hardcoding -> parse /etc/openqa/client.conf
 
 # Variables:
 ME="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")"
@@ -55,9 +54,18 @@ done
 if [ $SOURCE == "O3" ] 
 then
     SOURCE='https://openqa.opensuse.org'
-    elif [ $SOURCE == "OSD"  ] 
-    then 
+elif [ $SOURCE == "OSD"  ] 
+then 
         SOURCE='https://openqa.suse.de'
+fi
+
+# Check destination parameter
+if [ $DESTINATION == "O3" ]
+then
+    DESTINATION='https://openqa.opensuse.org'
+elif [ $DESTINATION == "OSD" ]
+then
+    DESTINATION='https://openqa.suse.de'
 fi
 
 
