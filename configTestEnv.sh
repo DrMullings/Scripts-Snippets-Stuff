@@ -17,7 +17,7 @@ echo 'Cloning needles for SLES'
 echo 'please clone SLES needles yourself, since not public available'
 
 echo 'Cloning needles for opensuse'
-cd $DISTRIOS/product/opensuse
+cd $DISTRIOS/products/opensuse
 git clone git@github.com:os-autoinst/os-autoinst-needles-opensuse.git needles
 
 TESTPATH="/var/lib/openqa/share/tests"

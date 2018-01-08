@@ -11,8 +11,8 @@ fi
 
 echo "Installing openQA"
 
-zypper ar -f obs://devel:openQA/openSUSE_Leap_42.2 openQA
-zypper ar -f obs://devel:openQA:Leap:42.2/openSUSE_Leap_42.2 openQA-perl-modules
+zypper ar -f obs://devel:openQA/openSUSE_Leap_42.3 openQA
+zypper ar -f obs://devel:openQA:Leap:42.2/openSUSE_Leap_42.3 openQA-perl-modules
 
 zypper in openQA
 
