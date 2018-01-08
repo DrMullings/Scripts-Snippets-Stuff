@@ -11,5 +11,12 @@ echo 'alias la="ls -a "' >> $ALIASFILE
 echo 'alias lla="ls -la "' >> $ALIASFILE
 echo 'alias sudo="sudo "' >> $ALIASFILE
 
+#TODO get sudo without passwd
+echo "Setting sudo"
+sudo echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER
+
 echo "Setting path"
-echo "export PATH=$PATH:/home/$USER/Scripts" >> /etc/bash.bashrc.local
+echo "sudo export PATH=$PATH:/home/$USER/Scripts" >> /etc/bash.bashrc.local
+
+echo "Setting vimrc"
+sudo cp $(pwd)/vimrc /etc/vimrc

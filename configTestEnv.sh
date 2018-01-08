@@ -2,11 +2,12 @@
 USER=$(whomai)
 
 echo 'Initializing directories'
-mkdir -p /home/$USER/Git
-cd /home/$USER/Git
-GITPATH=$(pwd)
+GITPATH=/home/$USER/Git
+mkdir -p $GITPATH
 DISTRIOS=$GITPATH/os-autoinst-distri-opensuse/
 OQAPATH=$GITPATH/openQA
+
+cd $GITPATH
 
 echo 'Cloning tests'
 git clone git@github.com:os-autoinst/os-autoinst-distri-opensuse.git
@@ -16,7 +17,7 @@ echo 'Cloning needles for SLES'
 echo 'please clone SLES needles yourself, since not public available'
 
 echo 'Cloning needles for opensuse'
-cd $DISTRIOS/product
+cd $DISTRIOS/product/opensuse
 git clone git@github.com:os-autoinst/os-autoinst-needles-opensuse.git needles
 
 TESTPATH="/var/lib/openqa/share/tests"
