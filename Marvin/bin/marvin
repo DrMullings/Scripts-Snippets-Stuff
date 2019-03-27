@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+from time import sleep
+import configparser
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + '/..'))
+
+from marvin.github import GitHub
+from marvin.irc import IRC
+
+config = configparser.ConfigParser()
+config.read("marvin.ini")
+
+HOST = config['IRC']['host']
+PORT = config['IRC']['port']
+CHANNEL = config['IRC']['channel']
+NICK = config['IRC']['nick']
+
+
+github = GitHub(config['Github']['client_id'], config['Github']['client_secret'], config['Github']['organisation'])
+irc = IRC(HOST, PORT, CHANNEL, NICK, github)
+stale_msg = config['Bot']['stale_msg']
+stale_time = int(config['Bot']['staletime'])
+
+while True:
+    repolist = config['Github']['repos'].split(',')
+    stale_pr_list = []
+    approved_prs = []
+
+    for repo in repolist:
+        pulls = github.repo_get_open_pulls(repo)
+        for pull in pulls:
+            age = github.pr_age(pull)
+            last_comment = github.last_comment_age(pull)
+            
+            try:
+                if last_comment >= stale_time:
+                    create_pr_comment(pull, stale_msg + " @" + get_last_comment_author())
+            except:
+                github.create_pr_comment(pull, stale_msg)
+
+            if github.is_approved(pull):
+                approved_prs.append(pull.number)
+
+print("Waiting for another hour")
+sleep(3600)
