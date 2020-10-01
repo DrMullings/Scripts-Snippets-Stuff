@@ -62,13 +62,16 @@ def is_story(tckt):
         return False
     return True
 
-def create_point(prj, leadTime, cycleTime):
+def create_point(prj, medianLeadTime, meanLeadTime, medianCycleTime, meanCycleTime):
     point = {
         "measurement": prj,
         "time": time,
+        #"time": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "fields": {
-            "Cycletime": cycleTime, 
-            "Leadtime": leadTime
+            "MedianLeadTime": float(medianLeadTime),
+            "MeanLeadTime":float(meanLeadTime),
+            "MedianCycletime": float(medianCycleTime),
+            "MeanCycleTime": float(meanCycleTime),
                 }
             }
     return point
@@ -76,6 +79,9 @@ def create_point(prj, leadTime, cycleTime):
 try:
     for prj in prjlist:
         tickets = redmine.issue.filter(project_id=prj, status_id=id_codes["Resolved"])
+
+        prjLeadList = []
+        prjCycList = []
 
         for tckt in tickets:
             if not is_story(tckt):
@@ -108,7 +114,16 @@ try:
             else:
                 cycTime = None
 
-            points.append(create_point(prj, leadTime, cycTime))
+            prjLeadList.append(leadTime)
+            if (cycTime):
+                 prjCycList.append(cycTime)
+
+        prjMedianLead = statistics.median(prjLeadList)
+        prjMeanLead = statistics.mean(prjLeadList)
+        prjMedianCyc = statistics.median(prjCycList)
+        prjMeanCyc = statistics.mean(prjCycList)
+        point = create_point(prj, prjMedianLead, prjMeanLead, prjMedianCyc, prjMeanCyc)
+        points.append(point)
 
 except Exception as e:
     print("Exception during parsing ", e)
